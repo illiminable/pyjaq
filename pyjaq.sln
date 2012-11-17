@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "pyjaq", "pyjaq\pyjaq.pyproj", "{A7B1AE16-AFE9-46FE-9406-CEAC745D8075}"
+EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "pyjaq_bench", "examples\pyjaq_bench\pyjaq_bench.pyproj", "{0913DD21-CF71-4A82-88BF-34AA6DAB0A15}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7B1AE16-AFE9-46FE-9406-CEAC745D8075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7B1AE16-AFE9-46FE-9406-CEAC745D8075}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0913DD21-CF71-4A82-88BF-34AA6DAB0A15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0913DD21-CF71-4A82-88BF-34AA6DAB0A15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
