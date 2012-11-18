@@ -6,7 +6,7 @@
     <ProjectGuid>{0913dd21-cf71-4a82-88bf-34aa6dab0a15}</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>pyjaq_bench.py</StartupFile>
-    <SearchPath>C:\Users\illiminable\Documents\Visual Studio 2010\Projects\pyjaq</SearchPath>
+    <SearchPath>C:\Users\illiminable\Documents\Visual Studio 2010\Projects\github\pyjaq\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>pyjaq_bench</Name>

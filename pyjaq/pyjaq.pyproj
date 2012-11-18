@@ -6,7 +6,7 @@
     <ProjectGuid>{a7b1ae16-afe9-46fe-9406-ceac745d8075}</ProjectGuid>
     <ProjectHome>.</ProjectHome>
     <StartupFile>pyjaqd.py</StartupFile>
-    <SearchPath>C:\Users\illiminable\Documents\Visual Studio 2010\Projects\pyjaq</SearchPath>
+    <SearchPath>C:\Users\illiminable\Documents\Visual Studio 2010\Projects\github\pyjaq\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>pyjaq</Name>
@@ -21,14 +21,24 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="backend_loader.py" />
+    <Compile Include="helpers.py" />
+    <Compile Include="backends\redis\queue.py" />
+    <Compile Include="backends\redis\__init__.py" />
+    <Compile Include="backends\__init__.py" />
     <Compile Include="core.py" />
     <Compile Include="log.py" />
     <Compile Include="pyjaqd.py" />
     <Compile Include="pyjaq_settings.py" />
     <Compile Include="queue_handlers.py" />
     <Compile Include="queue_manager.py" />
+    <Compile Include="reflection.py" />
     <Compile Include="worker_manager.py" />
     <Compile Include="__init__.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="backends\" />
+    <Folder Include="backends\redis\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
 </Project>

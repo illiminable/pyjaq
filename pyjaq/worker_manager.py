@@ -4,7 +4,7 @@ from multiprocessing import Process
 from threading import Thread
 
 class WorkerManager(object):
-    def __init__(self, worker_count, log, queue_manager, mode='process'):
+    def __init__(self, worker_count, log, queue_manager, mode):
         self._worker_count = worker_count
         self._log = log
         self._queue_manager = queue_manager
@@ -15,16 +15,21 @@ class WorkerManager(object):
     def _worker_func(cls, log, queue_manager):
         log.info("Worker here! pid=%s" % (os.getpid()))
 
+        log.info("Loading queues...")
+        queue_manager.load_queues()
+
         while True:
             log.info("Getting queue...")
-            q = queue_manager.get_queue()
+            q = queue_manager.get_worker_queue()
 
-            log.info("Popping item")
-            item = q.pop()
+            if q:
+                item = q.pop()
 
-            if item:
-                log.info("Handling item")
-                q.handle_item(item)
+                if item:
+                    log.info("Handling item id=%s" % item.id)
+                    q.handle_item(item)
+                else:
+                    log.info("Queue was empty")
 
             log.info("Sleeping...")
             time.sleep(1)

@@ -1,12 +1,14 @@
 import Queue as memq
-import simplejson
-from redis import StrictRedis
 
 class QueueItem(object):
     def __init__(self, queue_name, id, data):
         self.queue_name = queue_name
         self.id = id
         self.data = data
+
+class BaseMeta(object):
+    def get_item_id(self):
+        raise NotImplementedError('get_item_id not implemented on BaseMeta')
 
 class BaseQueue(object):
     def __init__(self, queue_name):
@@ -23,8 +25,6 @@ class BaseQueue(object):
 
     def pop(self):
         raise NotImplementedError('pop not implemented on BaseQueue')
-
-
 
 class InMemoryQueue(BaseQueue):
     def __init__(self, queue_name):
@@ -44,39 +44,6 @@ class InMemoryQueue(BaseQueue):
 
     def pop(self):
         return self.q.get()
-
-class RedisQueue(BaseQueue):
-    def __init__(self, queue_name, host, port=6379):
-        super(RedisQueue, self).__init__(queue_name)
-        self._redis = StrictRedis(host=host, port=port)
-
-    def _key_name(self):
-        return "pyjaq_%s" % self.queue_name
-
-    def clear(self):
-        self._redis.delete(self._key_name())
-
-    def length(self):
-        return self._redis.llen(self._key_name())
-
-    def push(self, data):
-        item_dict = {
-            "id": 1234,
-            "data": data
-        }
-
-        item_str = simplejson.dumps(item_dict)
-        self._redis.rpush(self._key_name(), item_str)
-
-    def pop(self):
-        item = None
-        item_str = self._redis.lpop(self._key_name())
-        item_dict = simplejson.loads(item_str)
-
-        if item_dict:
-            item = QueueItem(self.queue_name, item_dict['id'], item_dict['data'])
-
-        return item
 
 class SimpleQueue(InMemoryQueue):
     pass

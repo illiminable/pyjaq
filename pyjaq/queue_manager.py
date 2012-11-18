@@ -1,9 +1,11 @@
 import pyjaq.queue_handlers as handlers
-from pyjaq.core import RedisQueue
+from pyjaq.backend_loader import create_backend_queue
+from pyjaq.reflection import get_class_by_name
+import pyjaq.pyjaq_settings as settings
 
 class WorkerQueue(object):
     def __init__(self, queue_name, handler):
-        self._q = RedisQueue(queue_name, host="192.168.141.128")
+        self._q = create_backend_queue(queue_name)
         self._handler = handler
 
     def length(self):
@@ -15,7 +17,7 @@ class WorkerQueue(object):
     def handle_item(self, item):
         self._handler.perform(item)
 
-class QueueManager(object):
+class WorkerQueueManager(object):
     """
     The queue manager handles the mapping of queue names to handler classes.
     When multiple queues are being operated on it also handles which queue
@@ -24,15 +26,28 @@ class QueueManager(object):
     """
     def __init__(self):
         self._queue_map = {}
+        self._upto_queue = 0
 
-        self._map_queues()
+    def load_queues(self):
+        # TODO: Make this safer. Check for dupes.
+        for queue_name, queue_config in settings.QUEUES.items():
+            print "Loading a queue"
+            queue_handler_name = queue_config['handler']
+            handler_cls = get_class_by_name(queue_handler_name)
+            handler = handler_cls()
+            queue = WorkerQueue(queue_name, handler)
+            self._queue_map[queue_name] = queue
 
-    def _map_queues(self):
-        # TODO: Unhard code this
-        self._queue_map['name_queue'] = WorkerQueue('name_queue', handlers.HelloHandler())
-
-    def get_queue(self):
+    def get_worker_queue(self):
         """
-        Returns a queue for the worker to act on.
+        Returns a queue for the worker to act on or None if there are none
+        or there's nothing to do.
         """
-        return self._queue_map['name_queue']
+        queue = None
+        # TODO: Use an iterator
+        if len(self._queue_map) > 0:
+            queue_name = self._queue_map.keys()[self._upto_queue]
+            queue = self._queue_map[queue_name]
+            self._upto_queue = (self._upto_queue + 1) % len(self._queue_map)
+
+        return queue
